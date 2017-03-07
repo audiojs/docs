@@ -1,0 +1,27 @@
+{
+  "name": "docs",
+  "description": "Documentation for audiojs packages",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jamen/docs",
+  "author": "Jamen Marz (https://git.io/jamen)",
+  "repository": "audiojs/docs",
+  "license": "MIT",
+  "private": "true",
+  "bugs": {
+    "url": "https://github.com/audiojs/docs/issues"
+  },
+  "keywords": [
+    "audiojs",
+    "docs"
+  ],
+  "scripts": {
+    "build": "node build"
+  },
+  "dependencies": {
+    "browserify": "^14.1.0",
+    "cpy": "^5.0.0",
+    "ecosystem-docs": "^1.1.1",
+    "gh-pages": "^0.12.0",
+    "rimraf": "^2.6.1"
+  }
+}

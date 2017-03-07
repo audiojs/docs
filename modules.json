@@ -1,0 +1,6 @@
+[
+  "audiojs/audio",
+  "audiojs/audio-buffer",
+  "audiojs/audio-oscillator",
+  "audiojs/audio-speaker"
+]
