@@ -4,8 +4,6 @@ const repo = require('./view/repo')
 const css = require('sheetify')
 const projects = require('projects')
 
-css('./index.css')
-
 var initialRepo = window.location.hash.slice(1)
 var initial = initialRepo && projects.find(x => x.name === initialRepo)
 
@@ -35,3 +33,21 @@ app({
     ? repo(state, actions)
     : main(state, actions)
 })
+
+css`
+  html, body, #main, .app {
+    margin: 0;
+    padding: 0;
+    font-family: Lato;
+    width: 100%;
+    height: 100%;
+  }
+
+  * {
+    box-sizing: border-box
+  }
+
+  .app {
+    display: flex;
+  }
+`
