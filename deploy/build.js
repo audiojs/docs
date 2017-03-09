@@ -20,6 +20,7 @@ function bundle () {
   pull(
     b.source(__dirname + '/../src/index.js'),
     b.require(__dirname + '/tmp/modules.json', { expose: 'modules' }),
+    // b.transform('sheetify/transform'),
     b.transform('es2040'),
     b.bundle(),
     vinyl.map('index.js'),

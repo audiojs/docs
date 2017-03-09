@@ -30,6 +30,7 @@
     "pull-vinyl": "^1.2.0"
   },
   "dependencies": {
-    "hyperapp": "^0.7.1"
+    "hyperapp": "^0.7.1",
+    "sheetify": "^6.0.1"
   }
 }

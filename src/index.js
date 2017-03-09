@@ -1,15 +1,31 @@
-var modules = require('modules')
-var { app, h } = require('hyperapp')
+const { app, Router } = require('hyperapp')
+const main = require('./view/main')
+const repo = require('./view/repo')
 
 app({
-  root: document.querySelector('.main'),
+  root: document.getElementById('main'),
 
   model: {
+    active: false,
+    projects: require('modules')
+  },
 
+  subscriptions: [
+    (_, actions) => {
+      window.addEventListener('hashchange', function () {
+        var hash = window.location.hash
+        actions.select(hash && hash.slice(1))
+      })
+    }
+  ],
+
+  actions: {
+    select: (state, project) =>
+      ({ active: project })
   },
 
   view: (state, actions) =>
-    h('div', { class: 'app' }, modules.map(function (projects) {
-      return h('div', {}, projects.name)
-    }))
+    window.location.hash
+    ? repo(state, actions)
+    : main(state, actions)
 })
