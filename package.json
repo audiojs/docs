@@ -15,13 +15,21 @@
     "docs"
   ],
   "scripts": {
-    "build": "node build"
+    "build": "npm run clean && node deploy/build",
+    "deploy": "npm run build && node deploy && npm run clean",
+    "clean:cache": "rm -rf deploy/cache",
+    "clean": "rm -rf dist deploy/tmp"
+  },
+  "devDependencies": {
+    "cpy": "^5.0.0",
+    "ecodoc": "^0.0.0",
+    "es2040": "^1.2.4",
+    "gh-pages": "^0.12.0",
+    "pull-browserify": "^0.2.2",
+    "pull-stream": "^3.5.0",
+    "pull-vinyl": "^1.2.0"
   },
   "dependencies": {
-    "browserify": "^14.1.0",
-    "cpy": "^5.0.0",
-    "ecosystem-docs": "^1.1.1",
-    "gh-pages": "^0.12.0",
-    "rimraf": "^2.6.1"
+    "hyperapp": "^0.7.1"
   }
 }

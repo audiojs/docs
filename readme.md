@@ -3,33 +3,26 @@
 
 > Documentation for audiojs packages
 
-```js
-var docs = require('docs')
+Add repos to the `modules.json` then run `deploy` script.  It makes the requests to github and caches inside `deploy/cache`
 
-// ...
-```
+Inspired from [`pull-stream/pull-stream-docs`](https://github.com/pull-stream/pull-stream-docs) and [`stackgl/packages`](https://github.com/stackgl/packages)
 
-A longer description of your function here.
+## Scripts
 
-## Installation
+To build the site to `dist/`:
 
 ```sh
-$ npm install --save docs
+npm run build
 ```
 
-## Usage
+To build & deploy to gh-pages:
 
-### `docs()`
-
-A description of your function
-
-```js
-var foo = docs()
-
-// Log results
-console.log(foo)
+```sh
+npm run deploy
 ```
 
-## License
+To clear package cache:
 
-MIT © [Jamen Marz](https://git.io/jamen)
+```sh
+npm run clean:cache
+```
