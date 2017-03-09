@@ -16,7 +16,7 @@ app({
 
   view: function (state, actions) {
     return h('div', { class: 'app' }, modules.map(function (projects) {
-      return h('div', projects.name);
+      return h('div', {}, projects.name);
     }));
   }
 });
