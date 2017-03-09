@@ -1,44 +1,53 @@
-const { app, Router } = require('hyperapp')
-const main = require('./view/main')
-const repo = require('./view/repo')
+const { h, app, Router } = require('hyperapp')
 const css = require('sheetify')
 const projects = require('projects')
-
-var initialRepo = window.location.hash.slice(1)
-var initial = initialRepo && projects.find(x => x.name === initialRepo)
+const sidebar = require('./sidebar')
+const readme = require('./readme')
+const start = require('./start')
 
 app({
   root: document.getElementById('main'),
 
   model: {
-    active: initial,
-    projects: projects
+    active: null,
+    list: projects
   },
 
   subscriptions: [
-    (_, actions) => {
+    // This is the mini router thing
+    // Just looks for `#<repo>`, e.g. `#audiojs/audio`
+    (model, actions) => {
+      var initial = window.location.hash.slice(1)
+      if (initial) actions.visit(initial)
       window.addEventListener('hashchange', function () {
-        actions.select(window.location.hash.slice(1))
+        actions.visit(window.location.hash.slice(1))
       })
     }
   ],
 
   actions: {
-    select: (state, project) =>
-      ({ active: project && state.projects.find(x => x.name === project) })
+    visit: (model, project) =>
+      ({ active: project && model.list.find(x => x.name === project) }),
+
+    filter: (model, filter) =>
+      ({ list: projects.filter(x => x.name.indexOf(filter) !== -1) })
   },
 
-  view: (state, actions) =>
-    window.location.hash
-    ? repo(state, actions)
-    : main(state, actions)
+  view: (model, actions) =>
+    <div class='app'>
+      { sidebar(model, actions) }
+      { model.active
+        ? readme(model, actions)
+        : start(model, actions) }
+    </div>
 })
 
 css`
   html, body, #main, .app {
     margin: 0;
     padding: 0;
-    font-family: Lato;
+    font-family: 'Source Sans Pro';
+    background: #fafafa;
     width: 100%;
     height: 100%;
   }

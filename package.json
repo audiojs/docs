@@ -21,6 +21,8 @@
     "clean": "rm -rf dist deploy/tmp"
   },
   "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.23.0",
+    "babelify": "^7.3.0",
     "cpy": "^5.0.0",
     "ecodoc": "^0.0.0",
     "es2040": "^1.2.4",

@@ -20,6 +20,7 @@ function bundle () {
   pull(
     b.source(__dirname + '/../src/index.js'),
     b.require(__dirname + '/tmp/projects.json', { expose: 'projects' }),
+    b.transform('babelify', {plugins: [['transform-react-jsx', {pragma: 'h'}]]}),
     b.transform('sheetify/transform'),
     b.transform('es2040'),
     b.bundle(),
