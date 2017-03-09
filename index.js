@@ -3,23 +3,65 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 
 
 },{}],2:[function(require,module,exports){
-var modules = require('modules');
-
 var _require = require('hyperapp'),
-    app = _require.app,
     h = _require.h;
 
-app({
-  root: document.querySelector('.main'),
+module.exports = function (state, actions) {
+  return h('div', { class: 'sidebar' }, state.projects.map(function (project) {
+    return h('div', { class: 'project' }, [h('a', { class: 'project-name', href: '#' + project.name }, project.name)]);
+  }));
+};
+},{"hyperapp":1}],3:[function(require,module,exports){
+var _require = require('hyperapp'),
+    app = _require.app,
+    Router = _require.Router;
 
-  model: {},
+var main = require('./view/main');
+var repo = require('./view/repo');
+
+app({
+  root: document.getElementById('main'),
+
+  model: {
+    active: false,
+    projects: require('modules')
+  },
+
+  subscriptions: [function (_, actions) {
+    window.addEventListener('hashchange', function () {
+      var hash = window.location.hash;
+      actions.select(hash && hash.slice(1));
+    });
+  }],
+
+  actions: {
+    select: function (state, project) {
+      return { active: project };
+    }
+  },
 
   view: function (state, actions) {
-    return h('div', { class: 'app' }, modules.map(function (projects) {
-      return h('div', {}, projects.name);
-    }));
+    return window.location.hash ? repo(state, actions) : main(state, actions);
   }
 });
-},{"hyperapp":1,"modules":"modules"}],"modules":[function(require,module,exports){
+},{"./view/main":4,"./view/repo":5,"hyperapp":1,"modules":"modules"}],4:[function(require,module,exports){
+var _require = require('hyperapp'),
+    h = _require.h;
+
+var sidebar = require('../component/sidebar');
+
+module.exports = function (state, actions) {
+  return h('div', { class: 'app' }, [sidebar(state, actions), h('div', {}, 'none selected')]);
+};
+},{"../component/sidebar":2,"hyperapp":1}],5:[function(require,module,exports){
+var _require = require('hyperapp'),
+    h = _require.h;
+
+var sidebar = require('../component/sidebar');
+
+module.exports = function (state, actions) {
+  return h('div', { class: 'app' }, [sidebar(state, actions), h('span', {}, 'selected ' + state.active)]);
+};
+},{"../component/sidebar":2,"hyperapp":1}],"modules":[function(require,module,exports){
 module.exports=[{"name":"audiojs/audio","link":"https://github.com/audiojs/audio","stars":37,"readme":"# Audio [![build status][travis-i]][travis] [![gitter][gitter-i]][gitter]\n> Framework for handling audio in JavaScript.\n\n```javascript\n// Use streams to create, manipulate, or serialize audio.\n// For example, decoding and encoding with audio-wav:\nfs.createReadStream('./foo.wav').pipe(wav.decode())\n\n// Create your own streams to use the PCM data directly.\n.pipe(through2.obj(function(audio, enc, callback) {\n  // Read pulse values\n  var left = audio.read(200, 1);\n  var right = audio.read(100, 2);\n\n  // Write pulse values\n  audio.write(7, 500, 2);\n\n  // Push audio to continue pipe chain.\n  callback(null, audio);\n}));\n```\n\nA framework and object for using audio in JavaScript.  Based on top of streams to allow chaining utilities that wrap more complex operations.\n\n## Documentation\nSee [the `docs/` folder](docs/) for info on the framework and object.  Use [StackOverflow][stackoverflow] for your questions.\n\n## Installation\nUse the [npm keyword \"audiojs\"][npm-audiojs] to find utilities (with directions in their own READMEs).\n\nIf you are creating a utility and need to use the `Audio` object:\n```shell\n$ npm install --save audio\n```\n(Use `audio@next` for latest prerelease versions)\n\n## Credits\n\n|  ![jamen][author-avatar]  |\n|:-------------------------:|\n| [Jamen Marz][author-site] |\n\n## License\n[MIT](LICENSE) &copy; Jamen Marz\n\n\n[travis]: https://travis-ci.org/audiojs/audio\n[travis-i]: https://travis-ci.org/audiojs/audio.svg\n[gitter]: https://gitter.im/audiojs/audio\n[gitter-i]: https://badges.gitter.im/Join%20Chat.svg\n[npm-audiojs]: https://www.npmjs.com/browse/keyword/audiojs\n[author-site]: https://github.com/jamen\n[author-avatar]: https://avatars.githubusercontent.com/u/6251703?v=3&s=125\n[stackoverflow]: http://stackoverflow.com/questions/ask\n"},{"name":"audiojs/audio-buffer","link":"https://github.com/audiojs/audio-buffer","stars":14,"readme":"# audio-buffer [![Build Status](https://travis-ci.org/audiojs/audio-buffer.svg?branch=master)](https://travis-ci.org/audiojs/audio-buffer) [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)\n\n[AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) ponyfill. Provides useful constructor for Web-Audio API _AudioBuffer_, if available, otherwise provides optimal _AudioBuffer_ implementation for node/browsers. Useful instead of _Buffer_ in audio streams (see [**@audiojs**](https://github.com/audiojs) components).\n\n## Usage\n\n[![npm install audio-buffer](https://nodei.co/npm/audio-buffer.png?mini=true)](https://npmjs.org/package/audio-buffer/)\n\n```js\nvar AudioBuffer = require('audio-buffer')\n\n//Create audio buffer from a data source or of a length.\n//Data is interpreted as a planar sequence of float32 samples.\n//It can be Array, TypedArray, ArrayBuffer, Buffer, AudioBuffer, DataView, NDArray etc.\nvar buffer = new AudioBuffer(channels = 2, data|length, sampleRate = 44100)\n\n//Duration of the underlying audio data, in seconds\nbuffer.duration\n\n//Number of samples per channel\nbuffer.length\n\n//Default sample rate is 44100\nbuffer.sampleRate\n\n//Default number of channels is 2\nbuffer.numberOfChannels\n\n//Get array containing the data for the channel (not copied)\nbuffer.getChannelData(channel)\n\n//Place data from channel to destination Float32Array\nbuffer.copyFromChannel(destination, channelNumber, startInChannel = 0)\n\n//Place data from source Float32Array to the channel\nbuffer.copyToChannel(source, channelNumber, startInChannel = 0)\n\n\n//Some special properties, itâs unlikely you will ever need them.\n\n//Type of array for data. Float64Array is faster for modern node/browsers.\nAudioBuffer.FloatArray = Float64Array\n\n//In browser, you can set custom audio context (online/offline).\nAudioBuffer.context = require('audio-context')\n\n//Whether WebAudioAPI AudioBuffer should be created, if avail, instead of polyfilled structure\nAudioBuffer.isWAA = true\n```\n\n## See also\n\n* [audio-buffer-utils](https://github.com/audiojs/audio-buffer-utils) â utils for audio buffers\n* [pcm-util](https://npmjs.org/package/pcm-util) â utils for audio format convertions.\n\n## Similar\n\n* [ndsamples](https://github.com/livejs/ndsamples) â audio-wrapper for ndarrays. A somewhat alternative approach to wrap audio data, based on ndarrays, used by some modules in [livejs](https://github.com/livejs).\n* [1](https://www.npmjs.com/package/audiobuffer), [2](https://www.npmjs.com/package/audio-buffer), [3](https://github.com/sebpiq/node-web-audio-api/blob/master/lib/AudioBuffer.js), [4](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) â other AudioBuffer implementations.\n* [audiodata](https://www.npmjs.com/package/audiodata) alternative data holder from @mohayonao.\n"},{"name":"audiojs/audio-oscillator","link":"https://github.com/audiojs/audio-oscillator","stars":6,"readme":"# audio-oscillator [![Build Status](https://travis-ci.org/audiojs/audio-oscillator.svg?branch=master)](https://travis-ci.org/audiojs/audio-oscillator) [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)\n\nOscillate some periodic wave into stream. [OscillatorNode](http://webaudio.github.io/web-audio-api/#the-oscillatornode-interface) in stream land.\n\n## Usage\n\n[![$ npm install audio-oscillator](http://nodei.co/npm/audio-oscillator.png?mini=true)](http://npmjs.org/package/audio-oscillator)\n\n```js\nvar Oscillator = require('audio-oscillator');\nvar Speaker = require('audio-speaker');\nvar Slice = require('audio-slice');\n\nOscillator({\n\t//in hz\n\tfrequency: 440,\n\n\t//in cents\n\tdetune: 0,\n\n\t//sine, triangle, square, saw, pulse, wave\n\ttype: 'sine',\n\n\t//normalize result of `wave` type\n\tnormalize: true\n})\n.pipe(Slice(1))\n.pipe(Speaker());\n\n\n//Set periodic wave from arrays of real and imaginary coefficients\noscillator.setPeriodicWave(real, imag);\n```\n\n## Related\n\n> [audio-generator](https://github.com/audiojs/audio-generator) â generate audio stream with a function.<br/>\n> [audio-speaker](https://github.com/audiojs/audio-speaker) â output audio stream to speaker in node/browser.<br/>\n> [web-audio-stream](https://github.com/audiojs/web-audio-stream) â stream to web-audio node.<br/>\n"},{"name":"audiojs/audio-speaker","link":"https://github.com/audiojs/audio-speaker","stars":33,"readme":"#audio-speaker [![Build Status](https://travis-ci.org/audiojs/audio-speaker.svg?branch=master)](https://travis-ci.org/audiojs/audio-speaker) [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)\n\nOutput audio stream to speaker in node or browser.\n\n[![npm install audio-speaker](https://nodei.co/npm/audio-speaker.png?mini=true)](https://npmjs.org/package/audio-speaker/)\n\n\n### Use as a stream\n\n```js\nvar Speaker = require('audio-speaker/stream');\nvar Generator = require('audio-generator/stream');\n\nGenerator(function (time) {\n\t//panned unisson effect\n\tvar Ï = Math.PI * 2;\n\treturn [Math.sin(Ï * time * 441), Math.sin(Ï * time * 439)];\n})\n.pipe(Speaker({\n\t//PCM input format defaults, optional.\n\t//channels: 2,\n\t//sampleRate: 44100,\n\t//byteOrder: 'LE',\n\t//bitDepth: 16,\n\t//signed: true,\n\t//float: false,\n\t//interleaved: true,\n}));\n```\n\n### Use as a pull-stream\n\n```js\nconst pull = require('pull-stream/pull');\nconst speaker = require('audio-speaker/pull');\nconst osc = require('audio-oscillator/pull');\n\npull(osc({frequency: 440}), speaker());\n```\n\n### Use directly\n\nSpeaker is [async-sink](https://github.com/audiojs/contributing/wiki/Streams-convention) with `fn(data, cb)` notation.\n\n```js\nconst createSpeaker = require('audio-speaker');\nconst createGenerator = require('audio-generator');\n\nlet output = createSpeaker();\nlet generate = createGenerator(t => Math.sin(t * Math.PI * 2 * 440));\n\n(function loop (err, buf) {\n\tlet buffer = generate();\n\toutput(buffer, loop);\n})();\n```\n\n#### Related\n\n> [web-audio-stream](https://github.com/audiojs/web-audio-stream) â stream data to web-audio.<br/>\n> [audio-through](http://npmjs.org/package/audio-through) â universal stream for processing audio.<br/>\n> [node-speaker](http://npmjs.org/package/speaker) â output pcm stream to speaker in node.<br/>\n> [audio-feeder](https://github.com/brion/audio-feeder) â cross-browser speaker for pcm data.<br/>\n"}]
-},{}]},{},[2]);
+},{}]},{},[3]);
