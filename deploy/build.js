@@ -6,10 +6,10 @@ const cpy = require('cpy')
 const doc = ecodoc({ data: __dirname + '/cache' })
 
 pull(
-  pull.once(require(__dirname + '/../modules')),
+  pull.once(require(__dirname + '/../projects')),
   pull.asyncMap(doc),
   pull.map(x => new Buffer(JSON.stringify(x))),
-  vinyl.map('modules.json'),
+  vinyl.map('projects.json'),
   vinyl.write(__dirname + '/tmp', function (err) {
     if (err) throw err
     bundle()
@@ -19,8 +19,8 @@ pull(
 function bundle () {
   pull(
     b.source(__dirname + '/../src/index.js'),
-    b.require(__dirname + '/tmp/modules.json', { expose: 'modules' }),
-    // b.transform('sheetify/transform'),
+    b.require(__dirname + '/tmp/projects.json', { expose: 'projects' }),
+    b.transform('sheetify/transform'),
     b.transform('es2040'),
     b.bundle(),
     vinyl.map('index.js'),

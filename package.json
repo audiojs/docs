@@ -2,7 +2,7 @@
   "name": "docs",
   "description": "Documentation for audiojs packages",
   "version": "0.0.0",
-  "homepage": "https://github.com/jamen/docs",
+  "homepage": "https://audiojs.github.io/docs",
   "author": "Jamen Marz (https://git.io/jamen)",
   "repository": "audiojs/docs",
   "license": "MIT",
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "hyperapp": "^0.7.1",
+    "marked": "^0.3.6",
     "sheetify": "^6.0.1"
   }
 }

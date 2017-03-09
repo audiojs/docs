@@ -1,27 +1,33 @@
 const { app, Router } = require('hyperapp')
 const main = require('./view/main')
 const repo = require('./view/repo')
+const css = require('sheetify')
+const projects = require('projects')
+
+css('./index.css')
+
+var initialRepo = window.location.hash.slice(1)
+var initial = initialRepo && projects.find(x => x.name === initialRepo)
 
 app({
   root: document.getElementById('main'),
 
   model: {
-    active: false,
-    projects: require('modules')
+    active: initial,
+    projects: projects
   },
 
   subscriptions: [
     (_, actions) => {
       window.addEventListener('hashchange', function () {
-        var hash = window.location.hash
-        actions.select(hash && hash.slice(1))
+        actions.select(window.location.hash.slice(1))
       })
     }
   ],
 
   actions: {
     select: (state, project) =>
-      ({ active: project })
+      ({ active: project && state.projects.find(x => x.name === project) })
   },
 
   view: (state, actions) =>
