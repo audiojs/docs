@@ -6,7 +6,7 @@ const marked = require('marked')
 module.exports = (state, actions) => {
 
   function render (el) {
-    el.innerHTML = marked(state.active.readme)
+    el.innerHTML = state.active.readme
   }
 
   return h('div', {

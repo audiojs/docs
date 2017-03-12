@@ -1,26 +1,30 @@
-[
-  "audiojs/audio",
-  "audiojs/audio-buffer",
-  "audiojs/audio-oscillator",
-  "audiojs/audio-speaker",
-  "audiojs/audio-sink",
-  "audiojs/audio-generator",
-  "audiojs/audio-gain",
-  "audiojs/audio-through",
-  "audiojs/audio-slice",
-  "audiojs/audio-biquad",
-  "audiojs/audio-play",
-  "audiojs/audio-pcm-format",
-  "audiojs/audio-table",
-  "audiojs/audio-lena",
-  "audiojs/audio-decode",
-  "audiojs/audio-source",
-  "audiojs/audio-loader",
-  "audiojs/audio-mpg123",
-  "audiojs/web-audio-stream",
-  "audiojs/audio-buffer-utils",
-  "audiojs/pcm-util",
-  "audiojs/a-weighting",
-  "audiojs/decibels",
-  "audiojs/is-audio-buffer"
-]
+{
+  "core": [
+    "audiojs/audio",
+    "audiojs/audio-buffer",
+    "audiojs/audio-oscillator",
+    "audiojs/audio-speaker",
+    "audiojs/audio-sink",
+    "audiojs/audio-generator",
+    "audiojs/audio-gain",
+    "audiojs/audio-through",
+    "audiojs/audio-slice",
+    "audiojs/audio-biquad",
+    "audiojs/audio-play",
+    "audiojs/audio-decode",
+    "audiojs/audio-source",
+    "audiojs/audio-loader",
+    "audiojs/audio-mpg123",
+    "audiojs/web-audio-stream"
+  ],
+  "utils": [
+    "audiojs/audio-pcm-format",
+    "audiojs/audio-table",
+    "audiojs/audio-lena",
+    "audiojs/audio-buffer-utils",
+    "audiojs/pcm-util",
+    "audiojs/a-weighting",
+    "audiojs/decibels",
+    "audiojs/is-audio-buffer"
+  ]
+}

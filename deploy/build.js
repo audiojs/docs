@@ -3,11 +3,25 @@ const b = require('pull-browserify')
 const vinyl = require('pull-vinyl')
 const ecodoc = require('ecodoc')
 const cpy = require('cpy')
-const doc = ecodoc({ data: __dirname + '/cache' })
+const atob = require('atob')
+const marked = require('marked')
+
+marked.setOptions({ highlight: require('./highlight') })
+
+// Create ecosystem docs
+const docs = ecodoc({
+  cache: __dirname + '/cache',
+  map: function (project) {
+    // Preparse README
+    project.readme = marked(atob(project.readme))
+    console.log('Done', project.repo)
+    return project
+  }
+})
 
 pull(
   pull.once(require(__dirname + '/../projects')),
-  pull.asyncMap(doc),
+  pull.asyncMap(docs),
   pull.map(x => new Buffer(JSON.stringify(x))),
   vinyl.map('projects.json'),
   vinyl.write(__dirname + '/tmp', function (err) {

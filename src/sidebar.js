@@ -10,10 +10,10 @@ module.exports = (model, actions) =>
   </div>
 
 const list = ({ active, list }, actions) =>
-  list.map(({ name }) =>
-    <div class={active && active.name === name ? 'active project' : 'project'}>
+  list.map(({ name, repo }) =>
+    <div class={active && active.repo === repo ? 'active project' : 'project'}>
       <a class='project-name' href={'#' + name}>
-        {name.indexOf('audiojs/') === 0 ? name.slice(8) : project.name}
+        {repo.indexOf('audiojs/') === 0 ? name : repo}
       </a>
     </div>
   )
