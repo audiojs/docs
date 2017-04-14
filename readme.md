@@ -1,6 +1,8 @@
 
 # audiojs docs
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/audiojs/docs.svg)](https://greenkeeper.io/)
+
 > Documentation for audiojs packages
 
 Add repos to the `modules.json` then run `deploy` script.  It makes the requests to github and caches inside `deploy/cache`
